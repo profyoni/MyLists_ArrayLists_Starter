@@ -1,6 +1,10 @@
 package edu.touro.cs;
 
 import  org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MyArrayListTest {
@@ -41,5 +45,27 @@ class MyArrayListTest {
         backDoor[0] = "HAHHA";
 
         assertEquals("A", mal.get(0));
+    }
+
+    @org.junit.jupiter.api.Test
+    void iteration() {
+        MyArrayList mal = new MyArrayList();
+        mal.add("A");
+        mal.add("Q");
+
+        String concat = "";
+        for (String s : mal) {
+            concat += s;
+        }
+        assertEquals("AQ", concat);
+        ArrayList<String> al = new ArrayList<String>();
+
+        boolean ret = mal.addAll( al);
+    }
+
+    @org.junit.jupiter.api.Test
+    void generic() {
+        MyGenericArrayList<String> mal = new MyGenericArrayList();
+
     }
 }
