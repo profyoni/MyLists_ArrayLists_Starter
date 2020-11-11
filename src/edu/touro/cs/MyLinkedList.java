@@ -41,7 +41,7 @@ public class MyLinkedList<T> implements List<T> {
         return size() == 0;
     }
 
-    @Override
+    @Override //TODO
     public boolean contains(Object o) {
         return false;
     }
@@ -51,7 +51,7 @@ public class MyLinkedList<T> implements List<T> {
         return new MyLinkedListIterator();
     }
 
-    private class MyLinkedListIterator implements Iterator<T>{
+    private class MyLinkedListIterator implements Iterator<T>{//TODO
 
         private Node<T> prevPtr = head;
 
@@ -64,18 +64,22 @@ public class MyLinkedList<T> implements List<T> {
         public T next() { // returns next data elt, and updates the ptr
             return null;
         }
+
+        public void remove(){  //TODO
+
+        }
     }
-    @Override
+    @Override//TODO
     public Object[] toArray() {
         return new Object[0];
     }
 
-    @Override
+    @Override//TODO
     public <T1> T1[] toArray(T1[] a) {
         return null;
     }
 
-    @Override
+    @Override//TODO
     public boolean add(T t /* implicitly passes the this reference*/) {
         Node<T> newNode = new Node<>(t, tail, null);
 
@@ -86,37 +90,37 @@ public class MyLinkedList<T> implements List<T> {
         return true;
     }
 
-    @Override
+    @Override//TODO
     public boolean remove(Object o) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public boolean containsAll(Collection<?> c) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public boolean addAll(Collection<? extends T> c) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public boolean addAll(int index, Collection<? extends T> c) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public boolean removeAll(Collection<?> c) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public boolean retainAll(Collection<?> c) {
         return false;
     }
 
-    @Override
+    @Override//TODO
     public void clear() {
         head = tail = null; // disconnected nodes will be garbage collected
         size = 0;
@@ -125,7 +129,7 @@ public class MyLinkedList<T> implements List<T> {
 // static inner class
 // iterator
 
-    @Override
+    @Override//TODO
     public T get(int index) {
         // size check
 
@@ -135,17 +139,17 @@ public class MyLinkedList<T> implements List<T> {
         return currentNode.data;
     }
 
-    @Override
+    @Override//TODO
     public T set(int index, T element) {
         return null;
     }
 
-    @Override
+    @Override//TODO
     public void add(int index, T element) {
 
     }
 
-    @Override
+    @Override//TODO
     public T remove(int index) {
         // index bounds check >=0 and < size
 
@@ -163,12 +167,12 @@ public class MyLinkedList<T> implements List<T> {
 
     }
 
-    @Override
+    @Override //TODO
     public int indexOf(Object o) {
         return 0;
     }
 
-    @Override
+    @Override//TODO
     public int lastIndexOf(Object o) {
         return 0;
     }
