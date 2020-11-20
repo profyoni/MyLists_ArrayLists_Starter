@@ -45,7 +45,7 @@ public class MyArrayList implements List<String> {
 
         @Override
         public boolean hasNext() {
-            return beforeIndex < size();
+            return this.beforeIndex < size();
         }
 
         @Override
@@ -61,7 +61,7 @@ public class MyArrayList implements List<String> {
     //  | A | B | C |
     @Override
     public Iterator<String> iterator() {
-        return new MyArrayListIterator();
+        return new MyArrayListIterator(/*this*/);
     }
 
     @Override

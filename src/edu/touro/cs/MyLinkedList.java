@@ -1,35 +1,34 @@
 package edu.touro.cs;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 //public                        // U RO A R
 //protected
 //package private -  default
 //private
 
-class Node<T>
-{
-    T data;
-    Node<T> prev, next;
-
-    public Node(){}
-    public Node(T t, Node<T> prev, Node<T> next) {
-        data= t;
-        this.prev = prev;
-        this.next = next;
-    }
-}
 
 public class MyLinkedList<T> implements List<T> {
+
+    private class Node<T>
+    {
+        T data;
+        Node<T> prev, next;
+
+        public Node(){}
+        public Node(T data, Node<T> prev, Node<T> next) {
+            this.data= data;
+            this.prev = prev;
+            this.next = next;
+        }
+    }
+
     private Node<T> head, tail;
     private int size;
 
     public MyLinkedList()
     {
-        head = tail = new Node<>();
+        head = tail = new Node<>(); // dummy node
     }
     @Override
     public int size() {
@@ -48,35 +47,72 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new MyLinkedListIterator();
+       return new MyLinkedListIterator();
     }
 
-    private class MyLinkedListIterator implements Iterator<T>{//TODO
+    // Principle of Least Privilege - grant as little access as needed
+    // static inner class is when inner class has no need to access outer class
+    // and is placed in outer class to help organize code
 
-        private Node<T> prevPtr = head;
+    private class MyLinkedListIterator implements Iterator<T>{ // inner class (static inner classes vs nonstatic inner classes)
+
+        private Node<T> prevPtr = MyLinkedList.this.head;
+        private boolean nextWasCalled, removeWasCalled;
 
         @Override
         public boolean hasNext() {
-            return prevPtr.next != null;
+            return this.prevPtr.next != null;
         }
 
         @Override
         public T next() { // returns next data elt, and updates the ptr
-            return null;
+            if (! hasNext())
+                throw new NoSuchElementException();
+            nextWasCalled = true;
+            removeWasCalled = false; // allow remove to be called again
+            // incr iterator;
+            prevPtr = prevPtr.next;
+            return prevPtr.data;   // return data elt that was next
         }
 
-        public void remove(){  //TODO
+        public void remove(){
+            if (! nextWasCalled)
+            {
+                throw new IllegalStateException("Cannot call remove unless next called first");
+            }
+            if (removeWasCalled)
+            {
+                throw new IllegalStateException("Cannot call remove twice unless next was called first");
+            }
+            removeWasCalled = true;
+            // remove elt last returned by this iterator
+            Node<T> beforeCurrent = prevPtr.prev;
+            Node<T> afterCurrent = prevPtr.next;
 
+            beforeCurrent.next = afterCurrent;
+            afterCurrent.prev = beforeCurrent;
+            size--;
         }
     }
+
+    // iterators are necessary when you need to modify i.e. remove elt from list during iteration
+    //
     @Override//TODO
     public Object[] toArray() {
-        return new Object[0];
+        Object [] arr = new Object[size()];
+        int i = 0;
+        for (Object o : this)
+        {
+            arr[i++] = o;
+        }
+        return arr;
     }
 
     @Override//TODO
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        // if a size is large enough to store this ll, add elts of ll to a
+         return (T1 []) toArray();
+
     }
 
     @Override//TODO
@@ -90,7 +126,7 @@ public class MyLinkedList<T> implements List<T> {
         return true;
     }
 
-    @Override//TODO
+    @Override //TODO
     public boolean remove(Object o) {
         return false;
     }
@@ -122,26 +158,34 @@ public class MyLinkedList<T> implements List<T> {
 
     @Override//TODO
     public void clear() {
-        head = tail = null; // disconnected nodes will be garbage collected
+        head = tail = new Node<>(); // disconnected nodes will be garbage collected
         size = 0;
     }
 // remove
 // static inner class
 // iterator
 
-    @Override//TODO
-    public T get(int index) {
+    private Node<T> getNode(int index) // helper : 1. ask yourself what tool will make my job easier
+            // 2. look for repeated code and refactor and simplify
+    {
         // size check
-
         Node<T> currentNode = head;
-        for (int counter = 0; counter <= index; currentNode = currentNode.next, counter++ )
+        for (int counter = 0; counter <= index;  counter++ )
             ; // BLANK
-        return currentNode.data;
+        return currentNode;
     }
 
     @Override//TODO
-    public T set(int index, T element) {
-        return null;
+    public T get(int index) {
+        return getNode(index).data;
+    }
+
+    @Override//TODO
+    public T set(int index, T t) {
+        Node<T> node = getNode(index);
+        T oldData = node.data;
+        node.data = t;
+        return oldData;
     }
 
     @Override//TODO
@@ -158,6 +202,7 @@ public class MyLinkedList<T> implements List<T> {
             ; // BLANK
         T oldValue = previousNode.next.data;
         previousNode.next = previousNode.next.next;
+        // set prev refernce
         if (index == size-1)
         {
             tail = tail.prev;

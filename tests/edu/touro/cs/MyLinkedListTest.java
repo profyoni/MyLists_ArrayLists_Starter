@@ -16,8 +16,10 @@ public class MyLinkedListTest {
 
     MyLinkedListTest()
     {
-        abList.add("A");abList.add("B");
+        abList.add("A");
+        abList.add("B");
     }
+
     @org.junit.jupiter.api.Test
     void size() {
     }
@@ -96,14 +98,31 @@ public class MyLinkedListTest {
             concat += s;
         }
         assertEquals("AQ", concat);
-        ArrayList<String> al = new ArrayList<String>();
+    }
 
-        boolean ret = mll.addAll( al);
+    @org.junit.jupiter.api.Test
+    void iterationAndRemove() {
+        this.mll.add("A");
+        this.mll.add("Q");
+
+        Iterator<String> it = mll.iterator();
+        it.next(); //A
+        it.remove(); // remove A
+
+        String concat = "";
+        for ( it = mll.iterator(); it.hasNext();) {
+            String s = it.next();
+            concat += s;
+        }
+        assertEquals("Q", concat);
+        assertEquals(1, mll.size());
     }
 
     @org.junit.jupiter.api.Test
     void generic() {
         MyGenericArrayList<String> mll = new MyGenericArrayList();
+
+
 
     }
 }
